@@ -71,7 +71,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 
 
 	// Set the number of vertices in the vertex array.
-	m_vertexCount = 6;
+	m_vertexCount = 4;
 
 	// Set the number of indices in the index array.
 	m_indexCount = 6;
@@ -104,9 +104,13 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	vertices[3].color = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
 
 	// Load the index array with data.
+
+	//First Triangle
 	indices[0] = 0; // Bottom left
 	indices[1] = 1; // Top left
 	indices[2] = 2; // Top right
+
+	//Second Triangle
 	indices[3] = 0; // Bottom left
 	indices[4] = 2; // Top right
 	indices[5] = 3; // Bottom right
