@@ -71,10 +71,10 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 
 
 	// Set the number of vertices in the vertex array.
-	m_vertexCount = 4;
+	m_vertexCount = 9;
 
 	// Set the number of indices in the index array.
-	m_indexCount = 6;
+	m_indexCount = 24;
 
 	// Create the vertex array.
 	vertices = new VertexType[m_vertexCount];
@@ -91,29 +91,80 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	}
 
 	// Load the vertex array with data.
-	vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);  // Bottom left.
+	vertices[0].position = XMFLOAT3(-1.0f, 1.0f, 0.0f);  // Top Left.
 	vertices[0].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 
-	vertices[1].position = XMFLOAT3(-1.0f, 1.0f, 0.0f);  // Top Left.
-	vertices[1].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[1].position = XMFLOAT3(0.0f, 1.0f, 0.0f);  // Top Middle.
+	vertices[1].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	vertices[2].position = XMFLOAT3(1.0f, 1.0f, 0.0f);  // Top Right.
-	vertices[2].color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	vertices[2].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 
-	vertices[3].position = XMFLOAT3(1.0f, -1.0f, 0.0f);  // Bottom right.
-	vertices[3].color = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+	vertices[3].position = XMFLOAT3(-1.0f, 0.0f, 0.0f);  // Middle Left.
+	vertices[3].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+
+	vertices[4].position = XMFLOAT3(0.0f, 0.0f, 0.0f);  // Middle Center.
+	vertices[4].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+
+	vertices[5].position = XMFLOAT3(1.0f, 0.0f, 0.0f);  // Middle Right.
+	vertices[5].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+
+	vertices[6].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);  // Bottom left.
+	vertices[6].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+
+	vertices[7].position = XMFLOAT3(0.0f, -1.0f, 0.0f);  // Bottom Middle.
+	vertices[7].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+
+	vertices[8].position = XMFLOAT3(1.0f, -1.0f, 0.0f);  // Bottom Right.
+	vertices[8].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	// Load the index array with data.
 
 	//First Triangle
-	indices[0] = 0; // Bottom left
-	indices[1] = 1; // Top left
-	indices[2] = 2; // Top right
+	indices[0] = 0; // TL
+	indices[1] = 1; // TM
+	indices[2] = 3; // ML
 
 	//Second Triangle
-	indices[3] = 0; // Bottom left
-	indices[4] = 2; // Top right
-	indices[5] = 3; // Bottom right
+	indices[3] = 4; // MC
+	indices[4] = 3; // ML
+	indices[5] = 1; // TM
+
+	//Third Triangle
+	indices[6] = 1; // TM
+	indices[7] = 2; // TR
+	indices[8] = 4; // TM
+
+	//Fourth Triangle
+	indices[9] = 5; // MR
+	indices[10] = 4; // MC
+	indices[11] = 2; // TR
+
+	//Fifth Triangle
+	indices[12] = 3; // MC
+	indices[13] = 4; // ML
+	indices[14] = 6; // TM
+
+	//Sixth Triangle
+	indices[15] = 7; // MC
+	indices[16] = 6; // ML
+	indices[17] = 4; // TM
+
+	//Seven Triangle
+	indices[18] = 4; // MC
+	indices[19] = 5; // ML
+	indices[20] = 7; // TM
+
+	//Eighth Triagnle
+	indices[21] = 8; // MC
+	indices[22] = 7; // ML
+	indices[23] = 5; // TM
+
+
+	//Second Triangle
+	//indices[3] = 0; // Bottom left
+	//indices[4] = 2; // Top right
+	//indices[5] = 3; // Bottom right
 
 
 	// Set up the description of the static vertex buffer.
