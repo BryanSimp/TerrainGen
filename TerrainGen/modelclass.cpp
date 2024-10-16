@@ -90,63 +90,43 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	}
 
 	// Set x, y, index, and step for grid creation
-	float x, y;
+	float x, z;
 	float step = 2.0f / RESOLUTION; // Adjust step to cover the range [-1, 1]
 	int index = 0;
 
 	// Create the vertices based off the resolution
 	for (int row = 0; row <= RESOLUTION; row++) {
-		y = 1.0f - row * step; // Calculate y based on row
+		z = 1.0f - row * step; // Calculate y based on row
 		for (int col = 0; col <= RESOLUTION; col++) {
 			x = -1.0f + col * step; // Calculate x based on column
-			vertices[index].position = XMFLOAT3(x, y, 0.0f);
+			vertices[index].position = XMFLOAT3(x, 0.0f, z);
 			vertices[index].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 			index++;
 		}
 	}
 
 
-	// Load the index array with data.
+	// Load the indices based off the resolution
+	index = 0;
+	for (int row = 0; row < RESOLUTION; row++) {
+		for (int col = 0; col < RESOLUTION; col++) {
+			// Get the top-left vertex of the current quad
+			int topLeft = (row * (RESOLUTION + 1)) + col;
+			int topRight = topLeft + 1;
+			int bottomLeft = topLeft + (RESOLUTION + 1);
+			int bottomRight = bottomLeft + 1;
 
-	//First Triangle
-	indices[0] = 0; // TL
-	indices[1] = 1; // TM
-	indices[2] = 3; // ML
+			// First triangle
+			indices[index++] = topLeft;
+			indices[index++] = topRight;
+			indices[index++] = bottomLeft;
 
-	//Second Triangle
-	indices[3] = 4; // MC
-	indices[4] = 3; // ML
-	indices[5] = 1; // TM
-
-	//Third Triangle
-	indices[6] = 1; // TM
-	indices[7] = 2; // TR
-	indices[8] = 4; // TM
-
-	//Fourth Triangle
-	indices[9] = 5; // MR
-	indices[10] = 4; // MC
-	indices[11] = 2; // TR
-
-	//Fifth Triangle
-	indices[12] = 3; // MC
-	indices[13] = 4; // ML
-	indices[14] = 6; // TM
-
-	//Sixth Triangle
-	indices[15] = 7; // MC
-	indices[16] = 6; // ML
-	indices[17] = 4; // TM
-
-	//Seven Triangle
-	indices[18] = 4; // MC
-	indices[19] = 5; // ML
-	indices[20] = 7; // TM
-
-	//Eighth Triagnle
-	indices[21] = 8; // MC
-	indices[22] = 7; // ML
-	indices[23] = 5; // TM
+			// Second triangle
+			indices[index++] = bottomLeft;
+			indices[index++] = bottomRight;
+			indices[index++] = topRight;
+		}
+	}
 
 	// Set up the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
