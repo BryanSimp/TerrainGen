@@ -12,6 +12,9 @@
 #include <directxmath.h>
 using namespace DirectX;
 
+//Decide Resolution of the Grid
+#define RESOLUTION 2
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class name: ModelClass

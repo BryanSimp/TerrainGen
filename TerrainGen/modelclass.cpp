@@ -69,12 +69,11 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
 
-
 	// Set the number of vertices in the vertex array.
-	m_vertexCount = 9;
+	m_vertexCount = (RESOLUTION + 1) * (RESOLUTION + 1);
 
 	// Set the number of indices in the index array.
-	m_indexCount = 24;
+	m_indexCount = RESOLUTION * RESOLUTION * 6;
 
 	// Create the vertex array.
 	vertices = new VertexType[m_vertexCount];
@@ -90,33 +89,22 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 		return false;
 	}
 
-	// Load the vertex array with data.
-	vertices[0].position = XMFLOAT3(-1.0f, 1.0f, 0.0f);  // Top Left.
-	vertices[0].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+	// Set x, y, index, and step for grid creation
+	float x, y;
+	float step = 2.0f / RESOLUTION; // Adjust step to cover the range [-1, 1]
+	int index = 0;
 
-	vertices[1].position = XMFLOAT3(0.0f, 1.0f, 0.0f);  // Top Middle.
-	vertices[1].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+	// Create the vertices based off the resolution
+	for (int row = 0; row <= RESOLUTION; row++) {
+		y = 1.0f - row * step; // Calculate y based on row
+		for (int col = 0; col <= RESOLUTION; col++) {
+			x = -1.0f + col * step; // Calculate x based on column
+			vertices[index].position = XMFLOAT3(x, y, 0.0f);
+			vertices[index].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+			index++;
+		}
+	}
 
-	vertices[2].position = XMFLOAT3(1.0f, 1.0f, 0.0f);  // Top Right.
-	vertices[2].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
-
-	vertices[3].position = XMFLOAT3(-1.0f, 0.0f, 0.0f);  // Middle Left.
-	vertices[3].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
-
-	vertices[4].position = XMFLOAT3(0.0f, 0.0f, 0.0f);  // Middle Center.
-	vertices[4].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
-
-	vertices[5].position = XMFLOAT3(1.0f, 0.0f, 0.0f);  // Middle Right.
-	vertices[5].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
-
-	vertices[6].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);  // Bottom left.
-	vertices[6].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
-
-	vertices[7].position = XMFLOAT3(0.0f, -1.0f, 0.0f);  // Bottom Middle.
-	vertices[7].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
-
-	vertices[8].position = XMFLOAT3(1.0f, -1.0f, 0.0f);  // Bottom Right.
-	vertices[8].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	// Load the index array with data.
 
@@ -159,13 +147,6 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	indices[21] = 8; // MC
 	indices[22] = 7; // ML
 	indices[23] = 5; // TM
-
-
-	//Second Triangle
-	//indices[3] = 0; // Bottom left
-	//indices[4] = 2; // Top right
-	//indices[5] = 3; // Bottom right
-
 
 	// Set up the description of the static vertex buffer.
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
