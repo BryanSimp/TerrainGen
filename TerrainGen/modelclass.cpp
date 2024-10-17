@@ -105,7 +105,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 			float randomFloat = dis(gen); //generate random number
 			x = -1.0f + col * step; // Calculate x based on column
 			vertices[index].position = XMFLOAT3(x, randomFloat/10, z);
-			vertices[index].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+			vertices[index].color = XMFLOAT4((randomFloat + 0.75), (randomFloat + 0.75), (randomFloat + 0.75), 1.0f);
 			index++;
 		}
 	}
