@@ -12,5 +12,9 @@ and right arrow keys.To move up and down you use the up and down arrow keys.
 
 To run open up my project into visual studio 2022 and make sure you have the directx sdk downloaded on your system.
 
+EDIT: In modelclass.cpp in the InitializeBuffers function f you adjust the terrainWidth and terrainHeight 
+values to about half the resolution and then increase the heightScale to 50 and increase the noiseScale to 0.9 
+you can get something that looks like a grassy field.
+
 This is my first finished project using directX11
 Completion Date: 10/17/2024
