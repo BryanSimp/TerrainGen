@@ -108,8 +108,8 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 
 	// Load the indices based off the resolution
 	index = 0;
-	for (int row = 0; row < RESOLUTION; row++) {
-		for (int col = 0; col < RESOLUTION; col++) {
+	for (int col = 0; col < RESOLUTION; col++) {
+		for (int row = 0; row < RESOLUTION; row++) {
 			// Get the top-left vertex of the current quad
 			int topLeft = (row * (RESOLUTION + 1)) + col;
 			int topRight = topLeft + 1;
@@ -122,8 +122,8 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 			indices[index++] = bottomLeft;
 
 			// Second triangle
-			indices[index++] = bottomLeft;
 			indices[index++] = bottomRight;
+			indices[index++] = bottomLeft;
 			indices[index++] = topRight;
 		}
 	}

@@ -13,7 +13,7 @@
 using namespace DirectX;
 
 //Decide Resolution of the Grid
-#define RESOLUTION 2
+#define RESOLUTION 4
 
 
 ////////////////////////////////////////////////////////////////////////////////
