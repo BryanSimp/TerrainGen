@@ -69,6 +69,10 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
 
+	std::random_device rd;
+	std::mt19937 gen(rd()); 
+	std::uniform_real_distribution<float> dis(-1.0, 1.0);
+
 	// Set the number of vertices in the vertex array.
 	m_vertexCount = (RESOLUTION + 1) * (RESOLUTION + 1);
 
@@ -96,10 +100,11 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 
 	// Create the vertices based off the resolution
 	for (int row = 0; row <= RESOLUTION; row++) {
-		z = 1.0f - row * step; // Calculate y based on row
+		z = 1.0f - row * step; // Calculate z based on row
 		for (int col = 0; col <= RESOLUTION; col++) {
+			float randomFloat = dis(gen); //generate random number
 			x = -1.0f + col * step; // Calculate x based on column
-			vertices[index].position = XMFLOAT3(x, 0.0f, z);
+			vertices[index].position = XMFLOAT3(x, randomFloat/10, z);
 			vertices[index].color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 			index++;
 		}

@@ -10,10 +10,11 @@
 //////////////
 #include <d3d11.h>
 #include <directxmath.h>
+#include <random>
 using namespace DirectX;
 
 //Decide Resolution of the Grid
-#define RESOLUTION 4
+#define RESOLUTION 10
 
 
 ////////////////////////////////////////////////////////////////////////////////
