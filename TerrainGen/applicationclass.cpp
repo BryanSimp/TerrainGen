@@ -108,8 +108,8 @@ void ApplicationClass::Shutdown()
 // Add this new method to handle camera movement
 void ApplicationClass::HandleCameraMovement()
 {
-	float moveSpeed = 0.075f;  // Speed of camera movement
-	float rotateSpeed = 0.5f;
+	float moveSpeed = 0.5f;  // Speed of camera movement
+	float rotateSpeed = 1.0f;
 
 	XMFLOAT3 cameraPos = m_Camera->GetPosition();
 	XMFLOAT3 cameraRot = m_Camera->GetRotation();
@@ -147,11 +147,11 @@ void ApplicationClass::HandleCameraMovement()
 	// Up/Down movement
 	if (m_Input->IsKeyDown(VK_UP))  // Move Up
 	{
-		cameraPos.y += moveSpeed;
+		cameraPos.y += moveSpeed/2;
 	}
 	if (m_Input->IsKeyDown(VK_DOWN))  // Move Down
 	{
-		cameraPos.y -= moveSpeed;
+		cameraPos.y -= moveSpeed/2;
 	}
 
 	// Rotation (yaw)
