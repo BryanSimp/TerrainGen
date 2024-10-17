@@ -3,7 +3,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "applicationclass.h"
 
-
 ApplicationClass::ApplicationClass()
 {
 	m_Direct3D = 0;
@@ -23,9 +22,11 @@ ApplicationClass::~ApplicationClass()
 }
 
 
-bool ApplicationClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
+bool ApplicationClass::Initialize(int screenWidth, int screenHeight, HWND hwnd, InputClass* input)
 {
 	bool result;
+
+	m_Input = input;
 
 
 	// Create and initialize the Direct3D object.
@@ -104,12 +105,47 @@ void ApplicationClass::Shutdown()
 	return;
 }
 
+// Add this new method to handle camera movement
+void ApplicationClass::HandleCameraMovement()
+{
+	float moveSpeed = 0.075f; // Speed of camera movement
+
+	if (m_Input->IsKeyDown('W'))  // Move forward
+	{
+		m_Camera->SetPosition(
+			m_Camera->GetPosition().x,
+			m_Camera->GetPosition().y,
+			m_Camera->GetPosition().z + moveSpeed);
+	}
+	if (m_Input->IsKeyDown('S'))  // Move backward
+	{
+		m_Camera->SetPosition(
+			m_Camera->GetPosition().x,
+			m_Camera->GetPosition().y,
+			m_Camera->GetPosition().z - moveSpeed);
+	}
+	if (m_Input->IsKeyDown('A'))  // Move left
+	{
+		m_Camera->SetPosition(
+			m_Camera->GetPosition().x - moveSpeed,
+			m_Camera->GetPosition().y,
+			m_Camera->GetPosition().z);
+	}
+	if (m_Input->IsKeyDown('D'))  // Move right
+	{
+		m_Camera->SetPosition(
+			m_Camera->GetPosition().x + moveSpeed,
+			m_Camera->GetPosition().y,
+			m_Camera->GetPosition().z);
+	}
+}
+
 
 bool ApplicationClass::Frame()
 {
 	bool result;
 
-
+	HandleCameraMovement(); // Handle camera movement
 	// Render the graphics scene.
 	result = Render();
 	if (!result)

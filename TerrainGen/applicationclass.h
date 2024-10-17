@@ -12,12 +12,13 @@
 #include "cameraclass.h"
 #include "modelclass.h"
 #include "colorshaderclass.h"
+#include "inputclass.h"
 
 
 /////////////
 // GLOBALS //
 /////////////
-const bool FULL_SCREEN = false;
+const bool FULL_SCREEN = true;
 const bool VSYNC_ENABLED = true;
 const float SCREEN_DEPTH = 1000.0f;
 const float SCREEN_NEAR = 0.3f;
@@ -33,9 +34,10 @@ public:
 	ApplicationClass(const ApplicationClass&);
 	~ApplicationClass();
 
-	bool Initialize(int, int, HWND);
+	bool Initialize(int screenWidth, int screenHeight, HWND hwnd, InputClass* input);
 	void Shutdown();
 	bool Frame();
+	void HandleCameraMovement();
 
 private:
 	bool Render();
@@ -45,6 +47,7 @@ private:
 	CameraClass* m_Camera;
 	ModelClass* m_Model;
 	ColorShaderClass* m_ColorShader;
+	InputClass* m_Input;
 };
 
 #endif
