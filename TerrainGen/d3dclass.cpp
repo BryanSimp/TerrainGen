@@ -413,6 +413,8 @@ void D3DClass::BeginScene(float red, float green, float blue, float alpha)
 {
 	float color[4];
 
+	//Set color to be sky blue
+	float skyBlue[4] = { 0.53f, 0.81f, 0.92f, 1.0f };
 
 	// Setup the color to clear the buffer to.
 	color[0] = red;
@@ -421,7 +423,7 @@ void D3DClass::BeginScene(float red, float green, float blue, float alpha)
 	color[3] = alpha;
 
 	// Clear the back buffer.
-	m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
+	m_deviceContext->ClearRenderTargetView(m_renderTargetView, skyBlue); //setting the background color to be sky blue
 
 	// Clear the depth buffer.
 	m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);

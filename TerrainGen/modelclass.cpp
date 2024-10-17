@@ -128,7 +128,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 
 			// Color calculation based on normalized height
 			float normalizedHeight = (y - minHeight) / (maxHeight - minHeight);
-			vertices[index].color = XMFLOAT4(normalizedHeight * 0.8f + 0.2f, normalizedHeight * 0.8f + 0.2f, normalizedHeight * 0.8f + 0.2f, 1.0f); // Dark color at low height
+			vertices[index].color = XMFLOAT4(normalizedHeight * 0.2f + 0.2f, normalizedHeight * 0.8f + 0.2f, normalizedHeight * 0.2f + 0.2f, 1.0f); // Dark color at low height
 
 			index++;
 		}
