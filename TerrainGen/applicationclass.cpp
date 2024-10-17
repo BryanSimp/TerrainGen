@@ -108,36 +108,65 @@ void ApplicationClass::Shutdown()
 // Add this new method to handle camera movement
 void ApplicationClass::HandleCameraMovement()
 {
-	float moveSpeed = 0.075f; // Speed of camera movement
+	float moveSpeed = 0.075f;  // Speed of camera movement
+	float rotateSpeed = 0.5f;
 
+	XMFLOAT3 cameraPos = m_Camera->GetPosition();
+	XMFLOAT3 cameraRot = m_Camera->GetRotation();
+
+	// Calculate forward and right vectors based on the camera's yaw (rotation around the Y-axis)
+	float yaw = XMConvertToRadians(cameraRot.y);
+
+	XMFLOAT3 forward(-sinf(yaw), 0.0f, -cosf(yaw));
+	XMFLOAT3 right(cosf(yaw), 0.0f, -sinf(yaw));
+
+	// Forward/Backward movement
 	if (m_Input->IsKeyDown('W'))  // Move forward
 	{
-		m_Camera->SetPosition(
-			m_Camera->GetPosition().x,
-			m_Camera->GetPosition().y,
-			m_Camera->GetPosition().z + moveSpeed);
+		cameraPos.x -= forward.x * moveSpeed;
+		cameraPos.z -= forward.z * moveSpeed;
 	}
 	if (m_Input->IsKeyDown('S'))  // Move backward
 	{
-		m_Camera->SetPosition(
-			m_Camera->GetPosition().x,
-			m_Camera->GetPosition().y,
-			m_Camera->GetPosition().z - moveSpeed);
+		cameraPos.x += forward.x * moveSpeed;
+		cameraPos.z += forward.z * moveSpeed;
 	}
+
+	// Left/Right movement
 	if (m_Input->IsKeyDown('A'))  // Move left
 	{
-		m_Camera->SetPosition(
-			m_Camera->GetPosition().x - moveSpeed,
-			m_Camera->GetPosition().y,
-			m_Camera->GetPosition().z);
+		cameraPos.x -= right.x * moveSpeed;
+		cameraPos.z -= right.z * moveSpeed;
 	}
 	if (m_Input->IsKeyDown('D'))  // Move right
 	{
-		m_Camera->SetPosition(
-			m_Camera->GetPosition().x + moveSpeed,
-			m_Camera->GetPosition().y,
-			m_Camera->GetPosition().z);
+		cameraPos.x += right.x * moveSpeed;
+		cameraPos.z += right.z * moveSpeed;
 	}
+
+	// Up/Down movement
+	if (m_Input->IsKeyDown(VK_UP))  // Move Up
+	{
+		cameraPos.y += moveSpeed;
+	}
+	if (m_Input->IsKeyDown(VK_DOWN))  // Move Down
+	{
+		cameraPos.y -= moveSpeed;
+	}
+
+	// Rotation (yaw)
+	if (m_Input->IsKeyDown(VK_RIGHT))
+	{
+		cameraRot.y += rotateSpeed;
+	}
+	if (m_Input->IsKeyDown(VK_LEFT))
+	{
+		cameraRot.y -= rotateSpeed;
+	}
+
+	// Update camera position and rotation
+	m_Camera->SetPosition(cameraPos.x, cameraPos.y, cameraPos.z);
+	m_Camera->SetRotation(cameraRot.x, cameraRot.y, cameraRot.z);
 }
 
 
