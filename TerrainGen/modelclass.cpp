@@ -69,10 +69,6 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT result;
 
-	std::random_device rd;
-	std::mt19937 gen(rd()); 
-	std::uniform_real_distribution<float> dis(-1.0, 1.0);
-
 	// Set the number of vertices in the vertex array.
 	m_vertexCount = (RESOLUTION + 1) * (RESOLUTION + 1);
 
@@ -93,25 +89,34 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 		return false;
 	}
 
-	// Set x, y, index, and step for grid creation
+	// Terrain size parameters (e.g., how large the grid should be in world units)
+	float terrainWidth = 100.0f;  // Width of the terrain
+	float terrainHeight = 100.0f; // Depth of the terrain
+
+	// Calculate the step sizes in world units based on the resolution
+	float stepX = terrainWidth / RESOLUTION;
+	float stepZ = terrainHeight / RESOLUTION;
+
+	// Calculate half-sizes for centering
+	float halfWidth = terrainWidth / 2.0f;
+	float halfHeight = terrainHeight / 2.0f;
+
+	// Set x, z, index for grid creation
 	float x, z;
-	float step = 2.0f / RESOLUTION; // Adjust step to cover the range [-1, 1]
 	int index = 0;
 
-	// Create the vertices based off the resolution
+	// Create the vertices based on the expanded terrain size and centered on (0, 0)
 	for (int row = 0; row <= RESOLUTION; row++) {
-		z = 1.0f - row * step; // Calculate z based on row
+		z = halfHeight - row * stepZ;  // z ranges from halfHeight to -halfHeight
 		for (int col = 0; col <= RESOLUTION; col++) {
-			float randomFloat = dis(gen); //generate random number
-			x = -1.0f + col * step; // Calculate x based on column
-			vertices[index].position = XMFLOAT3(x, randomFloat/10, z);
-			vertices[index].color = XMFLOAT4((randomFloat + 0.75), (randomFloat + 0.75), (randomFloat + 0.75), 1.0f);
+			x = -halfWidth + col * stepX;  // x ranges from -halfWidth to halfWidth
+			vertices[index].position = XMFLOAT3(x, 0.0f, z);  // y = 0 initially
+			vertices[index].color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);  // White color (adjust if necessary)
 			index++;
 		}
 	}
 
-
-	// Load the indices based off the resolution
+	// Load the indices based on the resolution (as before)
 	index = 0;
 	for (int col = 0; col < RESOLUTION; col++) {
 		for (int row = 0; row < RESOLUTION; row++) {
