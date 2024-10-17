@@ -2,6 +2,7 @@
 // Filename: modelclass.cpp
 ////////////////////////////////////////////////////////////////////////////////
 #include "modelclass.h"
+#include "perlinclass.h"
 
 
 ModelClass::ModelClass()
@@ -90,8 +91,8 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	}
 
 	// Terrain size parameters (e.g., how large the grid should be in world units)
-	float terrainWidth = 100.0f;  // Width of the terrain
-	float terrainHeight = 100.0f; // Depth of the terrain
+	float terrainWidth = 1000.0f;  // Width of the terrain
+	float terrainHeight = 1000.0f; // Depth of the terrain
 
 	// Calculate the step sizes in world units based on the resolution
 	float stepX = terrainWidth / RESOLUTION;
@@ -101,17 +102,34 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	float halfWidth = terrainWidth / 2.0f;
 	float halfHeight = terrainHeight / 2.0f;
 
-	// Set x, z, index for grid creation
+	PerlinClass perlinNoise;
+	float heightScale = 15.0f;
+
+	// Initialize min and max height
+	float minHeight = FLT_MAX;
+	float maxHeight = -FLT_MAX;
+
 	float x, z;
 	int index = 0;
 
-	// Create the vertices based on the expanded terrain size and centered on (0, 0)
+	// Create the vertices and find min/max heights
 	for (int row = 0; row <= RESOLUTION; row++) {
-		z = halfHeight - row * stepZ;  // z ranges from halfHeight to -halfHeight
+		z = halfHeight - row * stepZ;
 		for (int col = 0; col <= RESOLUTION; col++) {
-			x = -halfWidth + col * stepX;  // x ranges from -halfWidth to halfWidth
-			vertices[index].position = XMFLOAT3(x, 0.0f, z);  // y = 0 initially
-			vertices[index].color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);  // White color (adjust if necessary)
+			x = -halfWidth + col * stepX;
+			float noiseScale = 0.05f;
+			float y = perlinNoise.perlin(col * noiseScale, row * noiseScale) * heightScale;
+
+			// Update min and max heights
+			if (y < minHeight) minHeight = y;
+			if (y > maxHeight) maxHeight = y;
+
+			vertices[index].position = XMFLOAT3(x, y, z);
+
+			// Color calculation based on normalized height
+			float normalizedHeight = (y - minHeight) / (maxHeight - minHeight);
+			vertices[index].color = XMFLOAT4(normalizedHeight * 0.8f + 0.2f, normalizedHeight * 0.8f + 0.2f, normalizedHeight * 0.8f + 0.2f, 1.0f); // Dark color at low height
+
 			index++;
 		}
 	}

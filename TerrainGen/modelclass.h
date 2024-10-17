@@ -14,7 +14,7 @@
 using namespace DirectX;
 
 //Decide Resolution of the Grid
-#define RESOLUTION 100
+#define RESOLUTION 1000
 
 
 ////////////////////////////////////////////////////////////////////////////////
